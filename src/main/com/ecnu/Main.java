@@ -10,6 +10,10 @@ import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.util.Scanner;
 
+import static com.ecnu.process.Eval.create_global_frame;
+import static com.ecnu.process.Eval.read_eval_print_loop;
+import static com.ecnu.process.Eval.setSpecial_forms;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -24,10 +28,14 @@ public class Main {
                 LexicalAnalyze lexicalAnalyze = new LexicalAnalyze();
                 SchemeList list = lexicalAnalyze.lexical_analyze(PreProcessor.preProcess(input));
                 list.print();
+                setSpecial_forms();
+
                 while(!list.isEmpty()) {
-                    AbPair abPair = SchemeReader.scheme_read(list);
-                    System.out.println(abPair.toString());
-                    System.out.println((abPair.print()));
+                    read_eval_print_loop(list, create_global_frame());
+
+                    //AbPair abPair = SchemeReader.scheme_read(list);
+                    //System.out.println(abPair.toString());
+                    //System.out.println((abPair.print()));
                 }
             } catch (Exception e) {
                 System.out.println("Error:::"+e.getMessage());
