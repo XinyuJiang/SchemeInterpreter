@@ -41,7 +41,13 @@ public class primitive {
     public static <T> boolean scheme_truep(T x){
         if (x instanceof Token)
         {String judge = x.toString();
-        return ! judge.equals("false");}
+        return ! (judge.equals("#f")||judge.equals("false"));}
+        if(x instanceof Boolean){
+            if((Boolean) x){
+                return true;
+            }
+            return false;
+        }
         return true;
     }
     public static <T> boolean scheme_falsep(T x){
@@ -130,7 +136,7 @@ public class primitive {
 //    判断是否是string,强类型语言不用吧。。。
     public static <T> boolean scheme_stringp(T s){
         //TODO:instanceof SchemeString 返回不对，待修复
-        if (s instanceof Token  && (((Token) s).getToken() instanceof SchemeString) || s.toString().equals("true") || s.toString().equals("false"))
+        if (s instanceof Token  && (((Token) s).getToken() instanceof SchemeIdentifier) || s.toString().equals("true") || s.toString().equals("false"))
         {String y= ((Token) s).getToken().toString();
             //if(y.substring(0,1).equals("\"")) return true;
             return true;}
@@ -142,7 +148,7 @@ public class primitive {
 
     public static <T> boolean scheme_symbolp(T x){
         if (x instanceof Token)
-            return ((Token) x).getToken() instanceof SchemeString || x.toString().equals("*") || x.toString().equals( "/") || x.toString().equals("+") || x.toString().equals("-");
+            return ((Token) x).getToken() instanceof SchemeIdentifier || x.toString().equals("*") || x.toString().equals( "/") || x.toString().equals("+") || x.toString().equals("-");
 
         return false;
     }
@@ -150,7 +156,7 @@ public class primitive {
     public static <T> boolean scheme_identifierp(T x){
 //        return (x instanceof Integer)||(x instanceof Float)&&(!(x instanceof Boolean));
         if (x instanceof Token)
-            return ((Token) x).getToken() instanceof SchemeIdentifier;
+            return ((Token) x).getToken() instanceof SchemeIdentifier || ((Token) x).getToken().toString().equals("quote");
         return false;
     }
 
@@ -171,47 +177,47 @@ public class primitive {
     }
 
 
-    public static int scheme_add(int[] a){
+    public static int scheme_add(Object[] a){
         int result=0;
         for (int i=0;i<a.length;i++){
-            result+=a[i];
+            result+=(int)a[i];
         }
         return result;
     }
 
     //注意a是int型的，所以不用类型检测
-    public static int scheme_sub(int[] a){
+    public static int scheme_sub(Object[] a){
 
         if(a.length==0){
             return 0;
         }
-        int result=a[0];
+        int result=(int)a[0];
         for(int i=1;i<a.length;i++){
 
-            result-=a[i];
+            result-=(int)a[i];
         }
         return result;
     }
     //*
-    public static int scheme_mul(int[] a){
+    public static int scheme_mul(Object[] a){
         int result=1;
         for (int i=0;i<a.length;i++){
 
-            result*=a[i];
+            result*=(int)a[i];
         }
         return result;
 
     }
 
-    public static int scheme_div(int[] a){
+    public static int scheme_div(Object[] a){
         if(a.length==0){
             return 0;
         }
-        int result=a[0];
+        int result=(int)a[0];
         for (int i=1;i<a.length;i++){
 
             try {
-                result /=a[i];
+                result /=(int)a[i];
             }catch (ArithmeticException e ){
                 System.out.println("程序出现异常，除数不能为0。");
             }

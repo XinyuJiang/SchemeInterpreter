@@ -7,6 +7,7 @@ import com.ecnu.utils.Pair;
 import com.ecnu.utils.Procedure.PrimitiveProcedure;
 import com.ecnu.utils.Procedure.Procedure;
 import com.ecnu.utils.nil;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -34,7 +35,7 @@ public class Eval {
 
         //剩下的情况这个表达式一定要是list，因此先进行判断
         if (!scheme_listp(expr))
-            System.out.print( "SchemeError!");//不是直接返回报错
+            System.out.print( "表达式格式错误！");//不是直接返回报错
 
         //肯定不是Token了
         AbPair first = (AbPair) expr.getFirst();
@@ -53,7 +54,7 @@ public class Eval {
             Procedure operator = (Procedure) scheme_eval(first, env);
             if(check_procedure(operator))
                 //直接返回处理结果，比如(* 1 2)，那么*相当于operator,其对应的procedure对rest，也就是(1 2)这个pair进行处理
-                return operator.eval_call((Pair)rest,env);
+                return operator.eval_call((AbPair)rest,env);
         }
 
         return "";
@@ -82,7 +83,7 @@ public class Eval {
     }
 
     //在给定框架中将这个scheme程序应用在args上
-    public static Object scheme_apply(PrimitiveProcedure procedure, AbPair args, Frame env)
+    public static Object scheme_apply(Procedure procedure, AbPair args, Frame env)
     {
         check_procedure(procedure);
         return procedure.apply(args,env);
@@ -119,6 +120,7 @@ public class Eval {
         int length;
         if (! scheme_listp(expr))
         {
+            System.out.println("表达式格式错误！");
             throw new RuntimeException();
         }
         try
@@ -130,6 +132,7 @@ public class Eval {
             throw new RuntimeException();
         }
         if (length < min || length > max)
+            System.out.println("表达式长度错误！");
             throw new RuntimeException();
 
     }
@@ -142,8 +145,9 @@ public class Eval {
         }
         catch(Exception e)
         {
-            System.out.println("input error!");
+            System.out.println("输入格式错误！");
         }
+        System.out.println(expression.toString());
         Object result = scheme_eval(expression, env);
 
         System.out.println(result);
@@ -176,7 +180,8 @@ public class Eval {
                 new PrimitiveProcedure("scheme_add", true, "add"));
         env.define("-",
                 new PrimitiveProcedure("scheme_sub", true, "sub"));
-
+        env.define("boolean?",
+                new PrimitiveProcedure("scheme_booleanp", true, "sub"));
         env.define("undefined", null);
         //add_primitives(env, PRIMITIVES);
         return env;

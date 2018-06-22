@@ -4,6 +4,7 @@ import com.ecnu.utils.AbPair;
 import com.ecnu.utils.Frame;
 import com.ecnu.utils.Pair;
 import com.ecnu.utils.nil;
+import org.omg.CORBA.OBJ_ADAPTER;
 
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -37,12 +38,12 @@ public class PrimitiveProcedure extends Procedure{
             System.out.print("arguments are not in a list");
             return false;
         }
-        int[] java_args = new int[maxcount];
+        Object[] java_args = new Object[maxcount];
 
         while (!args.getClass().isInstance(nil.getInstance()))
         {
             //将scheme的pair转换为java的List形式
-            java_args[count] = args.getInt();
+            java_args[count] = args.getVal();
             count ++;
             args = (AbPair) args.getSecond();
         }

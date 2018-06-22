@@ -1,7 +1,7 @@
 package com.ecnu.utils;
 
 import com.ecnu.Exception.TypeError;
-import com.ecnu.basic.SchemeList;
+import com.ecnu.basic.*;
 import com.ecnu.process.LexicalAnalyze;
 import com.ecnu.process.PreProcessor;
 import com.ecnu.process.SchemeReader;
@@ -47,8 +47,14 @@ public class AbPair<T1,T2> {
     }
 
 
-    public int getInt(){
-        return Integer.parseInt(this.getFirst().toString());}
+    public Object getVal() {
+        if (this.getFirst() instanceof Token && ((Token) this.getFirst()).getToken() instanceof SchemeNumber) {
+            return Integer.parseInt(this.getFirst().toString());
+        } else if (this.getFirst() instanceof Token && ((Token) this.getFirst()).getToken() instanceof SchemeBoolean) {
+            return (Token) this.getFirst();
+        }
+        return new Object();
+    }
 
     public AbPair map(String fn, Frame env) {
         ArrayList pairList = new ArrayList<>();
@@ -78,5 +84,14 @@ public class AbPair<T1,T2> {
             return new AbPair();
         }
 
+    }
+
+    public AbstractSchemeToken getToken(){
+        return new AbstractSchemeToken() {
+            @Override
+            public TokenType getType() {
+                return null;
+            }
+        };
     }
 }

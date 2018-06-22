@@ -1,13 +1,16 @@
 package com.ecnu.process;
 
+import com.ecnu.primitive.primitive;
+import org.omg.CORBA.OBJ_ADAPTER;
+
 import java.util.ArrayList;
 
 import static com.ecnu.primitive.primitive.*;
 
 public class FnProcess {
-    public static int fnprocess (String fnname, int[] args)
+    public static Object fnprocess (String fnname, Object[] args)
     {
-        int rtn = 0 ;
+        Object rtn = null;
         switch (fnname)
         {
             case "scheme_add":
@@ -21,6 +24,9 @@ public class FnProcess {
                 break;
             case "scheme_div":
                 rtn = scheme_div(args);
+                break;
+            case "scheme_booleanp":
+                rtn = primitive.scheme_booleanp(args[0]);
                 break;
         }
         return rtn;

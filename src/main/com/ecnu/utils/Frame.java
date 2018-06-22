@@ -1,6 +1,7 @@
 package com.ecnu.utils;
 
 import com.ecnu.utils.Procedure.Procedure;
+import com.ecnu.utils.Procedure.SymbolProcedure;
 
 import java.util.*;
 
@@ -22,11 +23,14 @@ public class Frame {
         this.bindings.put(symbol,value);
     }
 
-    public Procedure lookup(AbPair symbol)
+    public Object lookup(AbPair symbol)
     {
         //当前框架里找得到symbol的话直接返回对应的值
         if (this.bindings.containsKey(symbol.toString())) {
-            return (Procedure) this.bindings.get(symbol.toString());
+            if(this.bindings.get(symbol.toString()) instanceof SymbolProcedure){
+                return ((SymbolProcedure) this.bindings.get(symbol.toString())).getValue().getToken().toString();
+            }
+            return this.bindings.get(symbol.toString());
         }
         //不然父亲不为空的话去父亲里找
         else if (this.parent!= null)
@@ -37,7 +41,7 @@ public class Frame {
     }
 
     //批量绑定symbol给子框架
-    public Frame make_child_frame(Pair formals, Pair vals)
+    public Frame make_child_frame(AbPair formals, AbPair vals)
     {
         Frame child = new Frame(this);
         try {
@@ -51,9 +55,9 @@ public class Frame {
 
         while (!formals.getClass().isInstance(nil.getInstance()))//判断formals是不是nil,这里nil使用了单例模式
         {
-            child.bindings.put(formals.getFirst(),vals.getFirst());//将formals中的key和value放进child的binding中
-            formals = (Pair) formals.getSecond();
-            vals = (Pair) vals.getSecond();
+            child.bindings.put(formals.getFirst().toString(),vals.getFirst());//将formals中的key和value放进child的binding中
+            formals = (AbPair) formals.getSecond();
+            vals = (AbPair) vals.getSecond();
         }
         return child;
 

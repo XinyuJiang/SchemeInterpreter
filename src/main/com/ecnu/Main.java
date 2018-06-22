@@ -5,6 +5,7 @@ import com.ecnu.process.LexicalAnalyze;
 import com.ecnu.process.PreProcessor;
 import com.ecnu.process.SchemeReader;
 import com.ecnu.utils.AbPair;
+import com.ecnu.utils.Frame;
 import com.ecnu.utils.Pair;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
@@ -19,6 +20,7 @@ public class Main {
 
         Scanner in = new Scanner(System.in);
         String input = null;
+        Frame env = create_global_frame();
         while (true) {
             try {
                 input = in.nextLine();
@@ -31,7 +33,7 @@ public class Main {
                 setSpecial_forms();
 
                 while(!list.isEmpty()) {
-                    read_eval_print_loop(list, create_global_frame());
+                    read_eval_print_loop(list, env);
 
                     //AbPair abPair = SchemeReader.scheme_read(list);
                     //System.out.println(abPair.toString());

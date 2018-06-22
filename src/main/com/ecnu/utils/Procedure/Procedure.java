@@ -16,7 +16,11 @@ public class Procedure {
         //对每一个操作数进行evaluate
         //TODO:想办法迭代operands，这里rest的类型可能不对
         AbPair rest = operands.map("scheme_eval",env);
-        return scheme_apply((PrimitiveProcedure) this,rest,env);
+        return scheme_apply( this,rest,env);
+    }
+
+    public Object apply(AbPair args,Frame env){
+        return null;
     }
 
 }
