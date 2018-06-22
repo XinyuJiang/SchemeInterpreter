@@ -36,8 +36,8 @@ public class Frame {
         else if (this.parent!= null)
             return this.parent.lookup(symbol);
         //没父亲自己又没有这个symbol的话只能报错了
-        System.out.println("unknown identifier");
-        return new Procedure();
+        System.out.println("无法识别"+ symbol.toString() );
+        return null;
     }
 
     //批量绑定symbol给子框架

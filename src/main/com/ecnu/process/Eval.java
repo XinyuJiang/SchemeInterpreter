@@ -28,7 +28,8 @@ public class Eval {
         //如果expr是已经存在的标识符那么在环境里查找这个标识输出它binding的值即可
         //System.out.println(expr.toString());
             if (scheme_symbolp(expr))
-            return env.lookup(expr);
+                    return env.lookup(expr);
+
             //不然如果是可以直接处理的布尔类型，数字或者空的话，直接返回
         else if (self_evaluating(expr))
             return expr;
@@ -44,7 +45,6 @@ public class Eval {
           调用各自符号的对应函数就可以了
         */
 
-        //TODO:在java里用python类似的方法找到符号的对应函数
         if (scheme_identifierp(first) && special_forms.contains(first.toString()))
             return SPECIAL_FORMS(first.toString(), rest, env);
 
@@ -132,8 +132,8 @@ public class Eval {
             throw new RuntimeException();
         }
         if (length < min || length > max)
-            System.out.println("表达式长度错误！");
-            throw new RuntimeException();
+        {System.out.println("表达式长度错误！");
+            throw new RuntimeException();}
 
     }
 
@@ -149,8 +149,8 @@ public class Eval {
         }
         System.out.println(expression.toString());
         Object result = scheme_eval(expression, env);
-
-        System.out.println(result);
+        if (result != null)
+           System.out.println(result);
     }
 
 
